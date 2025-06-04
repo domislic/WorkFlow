@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>WorkFlow - Unos smjena</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <h1>WorkFlow - Unos smjena</h1>
+
+  <form id="shiftForm">
+    <div>
+      <div>
+        <label for="date">Datum smjene:</label>
+        <input type="date" id="date" name="date" required />
+      </div>
+      <div>
+        <label for="startTime">Početak smjene (sati i minute):</label>
+        <input type="time" id="startTime" name="startTime" required />
+      </div>
+      <div>
+        <label for="endTime">Kraj smjene (sati i minute):</label>
+        <input type="time" id="endTime" name="endTime" required />
+      </div>
+    </div>
+
+    <div>
+      <div>
+        <label for="shiftType">Tip smjene:</label>
+        <select id="shiftType" name="shiftType" required>
+          <option value="" disabled selected>Odaberi tip smjene</option>
+          <option value="Jutarnja">Jutarnja</option>
+          <option value="Popodnevna">Popodnevna</option>
+          <option value="Noćna">Noćna</option>
+        </select>
+      </div>
+      <div>
+        <label for="pay">Plaćanje po smjeni (€):</label>
+        <input type="number" id="pay" name="pay" step="0.01" min="0" required />
+      </div>
+    </div>
+
+    <button type="submit">Dodaj smjenu</button>
+  </form>
+
+  <table id="shiftsTable">
+    <thead>
+      <tr>
+        <th>Datum</th>
+        <th>Početak</th>
+        <th>Kraj</th>
+        <th>Tip smjene</th>
+        <th>Plaćanje (€)</th>
+        <th>Trajanje (h)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Redovi sa smjenama će se dodavati ovde -->
+    </tbody>
+  </table>
+
+  <script src="script.js"></script>
+</body>
+</html>
