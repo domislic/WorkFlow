@@ -3,10 +3,10 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///workflow.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@db/workflow'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-db = SQLAlchemy(app)
+db = SQLAlchemy(app, echo=True)
 
 # MODEL: Shift
 class Shift(db.Model):
@@ -57,8 +57,8 @@ def add_payment():
     return jsonify({'message': 'Payment added', 'id_payment': payment.id_payment})
 
 # Dohvati sve isplate s podacima o smjeni
-@app.route('/payments', methods=['GET'])
-def get_payments():
+@app.route('/payment', methods=['GET'])
+def get_payment():
     results = db.session.query(Payment, Shift).join(Shift).all()
     output = []
     for payment, shift in results:
@@ -81,4 +81,5 @@ def get_payments():
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000)
+
