@@ -1,15 +1,7 @@
-# 1. Koristi službeni Python image
-FROM python:3.10-slim
-
-# 2. Postavi radni direktorij unutar kontejnera
+FROM python:3.13-slim
 WORKDIR /app
-
-# 3. Kopiraj sve fajlove u radni direktorij
+COPY requirements.txt req.txt
+RUN pip3 install -r req.txt
 COPY . .
-
-# 4. Instaliraj potrebne Python biblioteke
-RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
-
-# 5. Pokreni aplikaciju
+EXPOSE 8080
 CMD ["python", "app.py"]

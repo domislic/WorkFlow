@@ -5,8 +5,9 @@ from datetime import datetime
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@db/workflow'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_ECHO'] = True
 
-db = SQLAlchemy(app, echo=True)
+db = SQLAlchemy(app)
 
 # MODEL: Shift
 class Shift(db.Model):
