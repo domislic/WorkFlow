@@ -1,25 +1,27 @@
+version: '3.8'
 
 services:
   db:
     image: mysql:8.0
+    container_name: workflow_db
+    restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: workflow
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
-      - dbdata:/var/lib/mysql
+      - db_data:/var/lib/mysql
 
   web:
     build: .
-    ports:
-      - "5000:5000"
+    container_name: workflow_app
     depends_on:
       - db
+    ports:
+      - "5001:8080"
     environment:
       - FLASK_ENV=development
-    volumes:
-      - .:/app
 
 volumes:
-  dbdata:
+  db_data:

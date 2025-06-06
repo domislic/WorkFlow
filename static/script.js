@@ -8,7 +8,7 @@ function calculateDuration(startTime, endTime) {
   let end = endH + endM / 60;
 
   if (end < start) {
-    end += 24;  // ako prelazi ponoć
+    end += 24; 
   }
   return (end - start).toFixed(2);
 }

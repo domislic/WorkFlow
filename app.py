@@ -9,7 +9,7 @@ app.config['SQLALCHEMY_ECHO'] = True
 
 db = SQLAlchemy(app)
 
-# MODEL: Shift
+
 class Shift(db.Model):
     id_shift = db.Column(db.Integer, primary_key=True)
     start_time = db.Column(db.DateTime, nullable=False)
@@ -20,7 +20,7 @@ class Shift(db.Model):
 
     payments = db.relationship('Payment', backref='shift', lazy=True)
 
-# MODEL: Payment
+
 class Payment(db.Model):
     id_payment = db.Column(db.Integer, primary_key=True)
     id_shift = db.Column(db.Integer, db.ForeignKey('shift.id_shift'), nullable=False)
@@ -28,7 +28,7 @@ class Payment(db.Model):
     overtime = db.Column(db.Float, default=0.0)
     night_shift = db.Column(db.Float, default=0.0)
 
-# Dodavanje smjene
+
 @app.route('/shift', methods=['POST'])
 def add_shift():
     data = request.json
@@ -43,7 +43,6 @@ def add_shift():
     db.session.commit()
     return jsonify({'message': 'Shift added', 'id_shift': shift.id_shift})
 
-# Dodavanje isplate
 @app.route('/payment', methods=['POST'])
 def add_payment():
     data = request.json
@@ -57,7 +56,7 @@ def add_payment():
     db.session.commit()
     return jsonify({'message': 'Payment added', 'id_payment': payment.id_payment})
 
-# Dohvati sve isplate s podacima o smjeni
+
 @app.route('/payment', methods=['GET'])
 def get_payment():
     results = db.session.query(Payment, Shift).join(Shift).all()
@@ -82,5 +81,5 @@ def get_payment():
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=8080)
 
