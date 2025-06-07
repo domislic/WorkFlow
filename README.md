@@ -13,6 +13,12 @@ cd WorkFlow
 
 git code
 
+## POKRETANJE DOCKERA: 
+docker build -t image:3.0 .
+
+docker run -p 5001:8080 image:3.0
+
+http://localhost:5001/
 ## FUNKCIONALNOSTI:
 1. Kreiranje smjena
 2. Unošenje satnice

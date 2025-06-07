@@ -1,81 +1,156 @@
 body {
   font-family: Arial, sans-serif;
-  max-width: 900px;
-  margin: 20px auto;
-  padding: 0 15px;
-  background-color: #f9f9f9;
-}
-h1 {
-  text-align: center;
+  margin: 20px;
+  background: #f9f9f9;
   color: #333;
 }
-form {
-  background: #fff;
-  padding: 20px;
+
+h1 {
+  text-align: center;
   margin-bottom: 30px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  border-radius: 8px;
+  color: #2c3e50;
 }
-label {
-  display: block;
-  margin-top: 15px;
-  font-weight: bold;
-  color: #555;
+
+.tabs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
 }
-input, select {
-  padding: 8px 10px;
-  font-size: 1rem;
-  margin-top: 6px;
-  width: 100%;
-  box-sizing: border-box;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  transition: border-color 0.2s;
-}
-input:focus, select:focus {
-  border-color: #007bff;
-  outline: none;
-}
-button {
-  margin-top: 20px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 12px 20px;
-  font-size: 1rem;
-  border-radius: 5px;
+
+.tab {
+  padding: 10px 20px;
+  margin: 0 5px;
   cursor: pointer;
+  background: #e0e0e0;
+  border-radius: 5px 5px 0 0;
+  user-select: none;
   transition: background-color 0.3s;
 }
-button:hover {
-  background-color: #0056b3;
-}
-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: #fff;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  border-radius: 8px;
-  overflow: hidden;
-}
-th, td {
-  padding: 12px 15px;
-  border-bottom: 1px solid #ddd;
-  text-align: left;
-}
-th {
-  background-color: #007bff;
+
+.tab.active {
+  background: #3498db;
   color: white;
+  font-weight: bold;
 }
-tbody tr:hover {
-  background-color: #f1f1f1;
+
+.tab-content {
+  background: white;
+  padding: 20px;
+  border-radius: 0 5px 5px 5px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  max-width: 650px;
+  margin: 0 auto;
 }
-@media (min-width: 600px) {
-  form > div {
-    display: flex;
-    gap: 15px;
-  }
-  form > div > div {
-    flex: 1;
-  }
+
+form label {
+  display: block;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+form input[type="time"],
+form input[type="number"],
+form select {
+  width: 100%;
+  padding: 6px;
+  margin-top: 5px;
+  box-sizing: border-box;
+  border-radius: 3px;
+  border: 1px solid #ccc;
+}
+
+form button {
+  background-color: #3498db;
+  border: none;
+  color: white;
+  padding: 10px 15px;
+  margin-top: 15px;
+  cursor: pointer;
+  border-radius: 3px;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+form button:hover {
+  background-color: #2980b9;
+}
+
+#shiftList {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 15px;
+}
+
+#shiftList li {
+  background: #ecf0f1;
+  margin-bottom: 8px;
+  padding: 10px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#shiftList button {
+  background-color: #e74c3c;
+  border: none;
+  color: white;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 3px;
+  font-size: 14px;
+}
+
+#shiftList button:hover {
+  background-color: #c0392b;
+}
+
+.calendar {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.calendar th, .calendar td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  vertical-align: top;
+  height: 100px;
+  position: relative;
+}
+
+.calendar th {
+  background-color: #3498db;
+  color: white;
+  text-align: center;
+}
+
+.date {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.shift {
+  background-color: #2ecc71;
+  color: white;
+  padding: 3px 6px;
+  margin-bottom: 3px;
+  border-radius: 3px;
+  font-size: 12px;
+}
+
+.shiftSelect {
+  width: 100%;
+  margin-top: 5px;
+  border-radius: 3px;
+  padding: 3px;
+  box-sizing: border-box;
+}
+
+.summary-info {
+  text-align: center;
+}
+
+.summary-text {
+  font-size: 1.2em;
+  font-weight: bold;
 }
