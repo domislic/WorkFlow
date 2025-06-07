@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
@@ -9,7 +9,6 @@ app.config['SQLALCHEMY_ECHO'] = True
 
 db = SQLAlchemy(app)
 
-
 class Shift(db.Model):
     id_shift = db.Column(db.Integer, primary_key=True)
     start_time = db.Column(db.DateTime, nullable=False)
@@ -17,9 +16,7 @@ class Shift(db.Model):
     shift_type = db.Column(db.String(50), nullable=False)
     pay_for_shift = db.Column(db.Float, nullable=False)
     day_of_week = db.Column(db.String(20), nullable=False)
-
     payments = db.relationship('Payment', backref='shift', lazy=True)
-
 
 class Payment(db.Model):
     id_payment = db.Column(db.Integer, primary_key=True)
@@ -28,6 +25,9 @@ class Payment(db.Model):
     overtime = db.Column(db.Float, default=0.0)
     night_shift = db.Column(db.Float, default=0.0)
 
+@app.route('/')
+def index():
+    return render_template('index.html')
 
 @app.route('/shift', methods=['POST'])
 def add_shift():
@@ -56,7 +56,6 @@ def add_payment():
     db.session.commit()
     return jsonify({'message': 'Payment added', 'id_payment': payment.id_payment})
 
-
 @app.route('/payment', methods=['GET'])
 def get_payment():
     results = db.session.query(Payment, Shift).join(Shift).all()
@@ -77,10 +76,6 @@ def get_payment():
             }
         })
     return jsonify(output)
-
-@app.route('/')
-def index():
-    return 'WorkFlow API is running.'
 
 if __name__ == '__main__':
     with app.app_context():

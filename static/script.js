@@ -22,10 +22,8 @@ form.addEventListener('submit', async e => {
   const shiftType = form.shiftType.value;
   const pay = parseFloat(form.pay.value).toFixed(2);
 
-
   const startDateTime = `${date}T${startTime}:00`;
   const endDateTime = `${date}T${endTime}:00`;
-
 
   const shiftData = {
     start_time: startDateTime,
@@ -46,9 +44,7 @@ form.addEventListener('submit', async e => {
       throw new Error('Greška prilikom dodavanja smjene');
     }
 
-    const result = await response.json();
-
-
+  
     const duration = calculateDuration(startTime, endTime);
     const row = document.createElement('tr');
     row.innerHTML = `
@@ -66,6 +62,7 @@ form.addEventListener('submit', async e => {
     alert(error.message);
   }
 });
+
 async function loadShifts() {
   try {
     const response = await fetch('/payment'); 
@@ -76,11 +73,9 @@ async function loadShifts() {
     const data = await response.json();
 
     data.forEach(item => {
-
       const shift = item.shift;
       const startDateTime = new Date(shift.start_time);
       const endDateTime = new Date(shift.end_time);
-
 
       const date = startDateTime.toISOString().slice(0, 10);
       const startTime = startDateTime.toTimeString().slice(0,5);
@@ -88,10 +83,8 @@ async function loadShifts() {
       const shiftType = shift.shift_type;
       const pay = shift.pay_for_shift.toFixed(2);
 
-
       const duration = calculateDuration(startTime, endTime);
 
- 
       const row = document.createElement('tr');
       row.innerHTML = `
         <td>${date}</td>
@@ -107,3 +100,5 @@ async function loadShifts() {
     alert(error.message);
   }
 }
+
+loadShifts();
