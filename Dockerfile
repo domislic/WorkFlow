@@ -1,4 +1,4 @@
-FROM python:3.13-slim
+FROM python:3.9
 WORKDIR /app
 COPY requirements.txt req.txt
 RUN pip3 install -r req.txt

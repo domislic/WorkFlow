@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@db/workflow'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///workflow.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
 
@@ -77,6 +77,10 @@ def get_payment():
             }
         })
     return jsonify(output)
+
+@app.route('/')
+def index():
+    return 'WorkFlow API is running.'
 
 if __name__ == '__main__':
     with app.app_context():
