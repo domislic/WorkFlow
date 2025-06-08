@@ -1,5 +1,3 @@
-// script.js
-
 const tabs = document.querySelectorAll('.tab');
 const tabContents = document.querySelectorAll('.tab-content');
 
@@ -16,7 +14,7 @@ let createdShifts = [];
 let calendarShifts = {};
 let summaryChart = null;
 
-// --- TABS ---
+
 tabs.forEach(tab => {
   tab.addEventListener("click", () => {
     tabs.forEach(t => t.classList.remove("active"));
@@ -31,7 +29,7 @@ tabs.forEach(tab => {
   });
 });
 
-// --- FORMA ZA DODAVANJE SMJENE ---
+
 shiftForm.addEventListener("submit", e => {
   e.preventDefault();
   const shiftType = document.getElementById("shiftType").value;
@@ -74,7 +72,7 @@ function renderShiftList() {
   });
 }
 
-// --- KALENDAR ---
+
 monthSelect.addEventListener("change", renderCalendar);
 
 function renderCalendar() {
@@ -153,22 +151,29 @@ function renderCalendar() {
   });
 }
 
-// --- SAZETAK ---
-function updateSummary() {
-  let totalHours = 0;
-  let totalBonus = 0;
-  let totalPay = 0;
-  let totalOvertime = 0;
 
-  const days = [];
-  const hours = [];
-  const overtime = [];
-  const bonuses = [];
+let summaryData = {
+  days: [],
+  pay: [],
+  hours: [],
+  overtime: [],
+  bonus: []
+};
+
+function updateSummary() {
+  summaryData = {
+    days: [],
+    pay: [],
+    hours: [],
+    overtime: [],
+    bonus: []
+  };
+
+  let totalPay = 0, totalHours = 0, totalBonus = 0;
+ 
 
   for (const date in calendarShifts) {
-    let dailyHours = 0;
-    let dailyBonus = 0;
-    let dailyPay = 0;
+    let dailyPay = 0, dailyHours = 0, dailyBonus = 0;
 
     calendarShifts[date].forEach(s => {
       dailyHours += s.duration;
@@ -176,67 +181,81 @@ function updateSummary() {
       dailyPay += s.duration * s.hourlyRate;
     });
 
-    const dailyOvertime = Math.max(0, dailyHours - 8);
+    summaryData.days.push(date);
+    summaryData.pay.push((dailyPay + dailyBonus).toFixed(2));
+    summaryData.hours.push(dailyHours.toFixed(2));
+    summaryData.bonus.push(dailyBonus.toFixed(2));
+    summaryData.overtime.push(Math.max(0, dailyHours - 8).toFixed(2));
 
-    totalHours += dailyHours;
-    totalBonus += dailyBonus;
-    totalPay += dailyPay + dailyBonus;
-    totalOvertime += dailyOvertime;
-
-    days.push(date);
-    hours.push(dailyHours);
-    overtime.push(dailyOvertime);
-    bonuses.push(dailyBonus);
+    totalPay += +dailyPay + +dailyBonus;
+    totalHours += +dailyHours;
+    totalBonus += +dailyBonus;
   }
 
-  totalHoursElem.textContent = `Ukupno sati: ${totalHours.toFixed(2)}`;
-  totalBonusElem.textContent = `Ukupno bonusi: €${totalBonus.toFixed(2)}`;
-  totalPayElem.textContent = `Ukupno plaća (€): ${totalPay.toFixed(2)}`;
-  totalOvertimeElem.textContent = `Prekovremeni sati: ${totalOvertime.toFixed(2)}`;
+  document.getElementById("totalPay").textContent = `Ukupno plaća (€): ${totalPay.toFixed(2)}`;
+  document.getElementById("totalHours").textContent = `Ukupno sati: ${totalHours.toFixed(2)}`;
+   document.getElementById("totalBonus").textContent = `Ukupno bonusa: €${totalBonus.toFixed(2)}`;
+  document.getElementById("totalOvertime").textContent = `Ukupno prekovremenih sati: ${summaryData.overtime.reduce((acc, h) => acc + parseFloat(h), 0).toFixed(2)}`;
+}
 
+function renderSummaryChart(type = "pay") {
+  const ctx = document.getElementById("summaryChart").getContext("2d");
   if (summaryChart) summaryChart.destroy();
 
-  const ctx = document.getElementById("summaryChart").getContext("2d");
+  let label = "";
+  let data = [];
+  let bgColor = "";
+
+  if (type === "pay") {
+    label = "Plaća (€)";
+    data = summaryData.pay;
+    bgColor = "#3498db";
+  } else if (type === "hours") {
+    label = "Sati";
+    data = summaryData.hours;
+    bgColor = "#2ecc71";
+  } else if (type === "bonus") {
+    label = "Bonus (€)";
+    data = summaryData.bonus;
+    bgColor = "#f39c12";
+  } else if (type === "overtime") {
+    label = "Prekovremeni sati";
+    data = summaryData.overtime;
+    bgColor = "#e74c3c";
+  }
+
   summaryChart = new Chart(ctx, {
     type: "bar",
     data: {
-      labels: days,
-      datasets: [
-        {
-          label: "Sati rada",
-          data: hours,
-          backgroundColor: "#4285F4"
-        },
-        {
-          label: "Prekovremeni sati",
-          data: overtime,
-          backgroundColor: "#EA4335"
-        },
-        {
-          label: "Bonusi (€)",
-          data: bonuses,
-          backgroundColor: "#34A853"
-        }
-      ]
+      labels: summaryData.days,
+      datasets: [{
+        label: label,
+        data: data,
+        backgroundColor: bgColor
+      }]
     },
     options: {
       responsive: true,
       plugins: {
-        legend: { position: "top" },
-        title: { display: true, text: "Rad po danima" }
+        legend: { display: false },
+        title: { display: true, text: label }
       },
       scales: {
         y: {
-          beginAtZero: true,
-          title: {
-            display: true,
-            text: "Vrijednost"
-          }
+          beginAtZero: true
         }
       }
     }
   });
 }
+document.querySelectorAll(".chart-toggle button").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".chart-toggle button").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    renderSummaryChart(btn.dataset.type);
+  });
+});
+
 
 loadShifts();
 

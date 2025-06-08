@@ -56,6 +56,14 @@
     <div id="totalPay">Ukupno plaća (€): 0</div>
   </div>
   <canvas id="summaryChart" width="600" height="300" style="margin-top: 20px;"></canvas>
+  <div class="chart-toggle">
+  <button data-type="pay">Plaća po danima</button>
+  <button data-type="hours">Sati po danima</button>
+  <button data-type="bonus">Bonusi po danima</button>
+  <button data-type="overtime">Prekovremeni</button>
+</div>
+
+
 </div>
 
   <script src="{{ url_for('static', filename='script.js') }}"></script>
