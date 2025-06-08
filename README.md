@@ -4,7 +4,7 @@ WorkFlow je aplikacija pomoću koje radnici prate svoje odrađene radne sate u b
 
 ## USECASE DIJAGRAM: 
 
-![Use_case](static/Use_case.jpeg)
+![Use_case](static/UseCase.jpeg)
 
 ## SKIDANJE KODA S GITHUB-A: 
 git clone https://github.com/domislic/WorkFlow.git 
@@ -22,6 +22,7 @@ http://localhost:5001/
 ## FUNKCIONALNOSTI:
 1. Kreiranje smjena
 2. Unošenje satnice
-3. Računanje bonusa i prekovremenih sati
-3. Izračun ukupne plaće
+3. Pregled smjena
+4. Računanje bonusa i prekovremenih sati
+5. Izračun ukupne plaće
 

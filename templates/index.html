@@ -4,9 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>WorkFlow App</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
-  <!-- Chart.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
 </head>
 <body>
 
@@ -23,15 +22,13 @@
       <label for="shiftType">Tip smjene:</label>
       <select id="shiftType" required>
         <option value="" disabled selected>Odaberi smjenu</option>
-        <option value="Jutarnja">Jutarnja</option>
-        <option value="Popodnevna">Popodnevna</option>
-        <option value="Noćna">Noćna</option>
+    
       </select>
 
-      <label for="startTime">Početak (HH:MM):</label>
+      <label for="startTime">Početak:</label>
       <input type="time" id="startTime" name="startTime" required />
 
-      <label for="endTime">Kraj (HH:MM):</label>
+      <label for="endTime">Kraj:</label>
       <input type="time" id="endTime" name="endTime" required />
 
       <label for="hourlyRate">Satnica (€ / h):</label>
@@ -50,19 +47,20 @@
   <div id="calendar" class="tab-content" style="display: none;">
     <label for="monthSelect">Odaberite mjesec:</label>
     <input type="month" id="monthSelect" />
-
     <div id="calendarContainer" style="margin-top: 20px;"></div>
   </div>
 
   <div id="summary" class="tab-content" style="display: none;">
-    <div class="summary-info" style="margin-top: 15px;">
-      <div id="totalHours" class="summary-text">Ukupno sati: 0</div>
-      <div id="totalPay" class="summary-text" style="margin-top: 10px;">Ukupno plaća (€): 0</div>
+    <h2>Sažetak</h2>
+    <div id="summaryInfo">
+      <div id="totalHours">Ukupno sati: 0</div>
+      <div id="totalOvertime">Prekovremeni sati: 0</div>
+      <div id="totalBonus">Ukupno bonusi: €0</div>
+      <div id="totalPay">Ukupno plaća (€): 0</div>
     </div>
-    <canvas id="summaryChart" style="max-width: 600px; margin-top: 25px;"></canvas>
+    <canvas id="summaryChart" width="600" height="300" style="margin-top: 20px;"></canvas>
   </div>
 
   <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
-
