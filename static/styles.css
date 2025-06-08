@@ -2,19 +2,19 @@ body {
   font-family: Arial, sans-serif;
   margin: 20px;
   background: #f9f9f9;
-  color: #333;
+  color: #000000;
 }
 
 h1 {
   text-align: center;
-  margin-bottom: 30px;
-  color: #2c3e50;
+  margin-bottom: 40px;
+  color: #0d3d6d;
 }
 
 .tabs {
   display: flex;
   justify-content: center;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 }
 
 .tab {
@@ -37,14 +37,14 @@ h1 {
   background: white;
   padding: 20px;
   border-radius: 0 5px 5px 5px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  box-shadow: 0 0 10px #0000001a;
   max-width: 650px;
   margin: 0 auto;
 }
 
 form label {
   display: block;
-  margin-top: 10px;
+  margin-top: 20px;
   font-weight: bold;
 }
 
@@ -122,6 +122,7 @@ form button:hover {
   background-color: #3498db;
   color: white;
   text-align: center;
+  line-height: 1.2;
 }
 
 .date {
@@ -130,7 +131,7 @@ form button:hover {
 }
 
 .shift {
-  background-color: #2ecc71;
+  background-color: #3577da;
   color: white;
   padding: 3px 6px;
   margin-bottom: 3px;

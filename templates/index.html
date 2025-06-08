@@ -14,17 +14,14 @@
   <div class="tabs">
     <div class="tab active" data-tab="shifts">Smjene</div>
     <div class="tab" data-tab="calendar">Kalendar</div>
-    <div class="tab" data-tab="summary">Sažetak</div>
+    <div class="tab" data-tab="summary">Izračun</div>
   </div>
 
   <div id="shifts" class="tab-content" style="display: block;">
     <form id="shiftForm">
       <label for="shiftType">Tip smjene:</label>
-      <select id="shiftType" required>
-        <option value="" disabled selected>Odaberi smjenu</option>
+      <input type="text" id="shiftType" name="Unesite tip smjene" required />
     
-      </select>
-
       <label for="startTime">Početak:</label>
       <input type="time" id="startTime" name="startTime" required />
 
@@ -51,15 +48,15 @@
   </div>
 
   <div id="summary" class="tab-content" style="display: none;">
-    <h2>Sažetak</h2>
-    <div id="summaryInfo">
-      <div id="totalHours">Ukupno sati: 0</div>
-      <div id="totalOvertime">Prekovremeni sati: 0</div>
-      <div id="totalBonus">Ukupno bonusi: €0</div>
-      <div id="totalPay">Ukupno plaća (€): 0</div>
-    </div>
-    <canvas id="summaryChart" width="600" height="300" style="margin-top: 20px;"></canvas>
+  <h2>Izračun: </h2>
+  <div id="summaryInfo">
+    <div id="totalHours">Ukupno sati: 0</div>
+    <div id="totalOvertime">Ukupno prekovremenih sati: 0</div>
+    <div id="totalBonus">Ukupno bonusa: €0</div>
+    <div id="totalPay">Ukupno plaća (€): 0</div>
   </div>
+  <canvas id="summaryChart" width="600" height="300" style="margin-top: 20px;"></canvas>
+</div>
 
   <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>

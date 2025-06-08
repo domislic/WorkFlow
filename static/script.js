@@ -1,14 +1,16 @@
+// script.js
+
 const tabs = document.querySelectorAll('.tab');
 const tabContents = document.querySelectorAll('.tab-content');
 
-const tabs = document.querySelectorAll(".tab");
-const tabContents = document.querySelectorAll(".tab-content");
 const shiftForm = document.getElementById("shiftForm");
 const shiftList = document.getElementById("shiftList");
 const monthSelect = document.getElementById("monthSelect");
 const calendarContainer = document.getElementById("calendarContainer");
 const totalHoursElem = document.getElementById("totalHours");
 const totalPayElem = document.getElementById("totalPay");
+const totalBonusElem = document.getElementById("totalBonus");
+const totalOvertimeElem = document.getElementById("totalOvertime");
 
 let createdShifts = [];
 let calendarShifts = {};
@@ -47,8 +49,8 @@ shiftForm.addEventListener("submit", e => {
 });
 
 function calculateDuration(startTime, endTime) {
-  const [startH, startM] = startTime.split(":").map(Number);
-  const [endH, endM] = endTime.split(":").map(Number);
+  const [startH, startM] = startTime.split(":" ).map(Number);
+  const [endH, endM] = endTime.split(":" ).map(Number);
   let start = startH + startM / 60;
   let end = endH + endM / 60;
   if (end < start) end += 24;
@@ -78,12 +80,11 @@ monthSelect.addEventListener("change", renderCalendar);
 function renderCalendar() {
   const monthValue = monthSelect.value;
   if (!monthValue) {
-    calendarContainer.innerHTML = "<p>Odaberite mjesec.</p>";
+    calendarContainer.innerHTML ;
     return;
   }
 
-  calendarShifts = {};
-  const [year, month] = monthValue.split("-").map(Number);
+  const [year, month] = monthValue.split("-" ).map(Number);
   const firstDay = new Date(year, month - 1, 1);
   const lastDay = new Date(year, month, 0);
 
@@ -99,16 +100,19 @@ function renderCalendar() {
   for (let day = 1; day <= lastDay.getDate(); day++) {
     const dateStr = `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
     html += `<td data-date="${dateStr}"><div class="date">${day}</div>`;
+
     if (calendarShifts[dateStr]) {
-      calendarShifts[dateStr].forEach(s => {
-        html += `<div class="shift">${s.shiftType} (${s.startTime}-${s.endTime})</div>`;
+      calendarShifts[dateStr].forEach((s, idx) => {
+        html += `<div class="shift">${s.shiftType} (${s.startTime}-${s.endTime}) <button class="delShift" data-date="${dateStr}" data-index="${idx}">🗑</button></div>`;
       });
     }
+
     html += `<select class="shiftSelect" data-date="${dateStr}"><option value="">Dodaj smjenu...</option>`;
     createdShifts.forEach((s, i) => {
       html += `<option value="${i}">${s.shiftType} (${s.startTime}-${s.endTime})</option>`;
     });
     html += "</select></td>";
+
     if ((startWeekDay + day) % 7 === 0 && day !== lastDay.getDate()) html += "</tr><tr>";
   }
 
@@ -126,9 +130,24 @@ function renderCalendar() {
       if (shiftIndex === "") return;
       const shift = createdShifts[shiftIndex];
       if (!calendarShifts[date]) calendarShifts[date] = [];
-      if (!calendarShifts[date].some(s => s.shiftType === shift.shiftType && s.startTime === shift.startTime && s.endTime === shift.endTime)) {
+
+      if (!calendarShifts[date].some(s => 
+        s.shiftType === shift.shiftType && 
+        s.startTime === shift.startTime && 
+        s.endTime === shift.endTime
+      )) {
         calendarShifts[date].push(shift);
       }
+      renderCalendar();
+    });
+  });
+
+  document.querySelectorAll(".delShift").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const date = btn.dataset.date;
+      const index = btn.dataset.index;
+      calendarShifts[date].splice(index, 1);
+      if (calendarShifts[date].length === 0) delete calendarShifts[date];
       renderCalendar();
     });
   });
@@ -139,6 +158,7 @@ function updateSummary() {
   let totalHours = 0;
   let totalBonus = 0;
   let totalPay = 0;
+  let totalOvertime = 0;
 
   const days = [];
   const hours = [];
@@ -156,18 +176,23 @@ function updateSummary() {
       dailyPay += s.duration * s.hourlyRate;
     });
 
+    const dailyOvertime = Math.max(0, dailyHours - 8);
+
     totalHours += dailyHours;
     totalBonus += dailyBonus;
     totalPay += dailyPay + dailyBonus;
+    totalOvertime += dailyOvertime;
 
     days.push(date);
     hours.push(dailyHours);
-    overtime.push(Math.max(0, dailyHours - 8));
+    overtime.push(dailyOvertime);
     bonuses.push(dailyBonus);
   }
 
   totalHoursElem.textContent = `Ukupno sati: ${totalHours.toFixed(2)}`;
+  totalBonusElem.textContent = `Ukupno bonusi: €${totalBonus.toFixed(2)}`;
   totalPayElem.textContent = `Ukupno plaća (€): ${totalPay.toFixed(2)}`;
+  totalOvertimeElem.textContent = `Prekovremeni sati: ${totalOvertime.toFixed(2)}`;
 
   if (summaryChart) summaryChart.destroy();
 
